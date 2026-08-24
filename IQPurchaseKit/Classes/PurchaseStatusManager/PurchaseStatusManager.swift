@@ -1,6 +1,6 @@
 //
 //  PurchaseStatusManager.swift
-//  https://github.com/hackiftekhar/IQStoreKitManager
+//  https://github.com/hackiftekhar/IQPurchaseKit
 //  Copyright (c) 2025-26 Iftekhar Qurashi.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -96,7 +96,7 @@ internal extension PurchaseStatusManager {
 
                 let introEligible = await isEligibleForIntroOffer(for: product)
                 // Non-subscription product — try to find a latest transaction
-                if let transaction = await StoreKitManager.shared.latestTransaction(for: product.id) {
+                if let transaction = await IQPurchaseKit.shared.latestTransaction(for: product.id) {
                     let snap = ProductSnapshot(product: product,
                                                isEligibleForIntroOffer: introEligible,
                                                transaction: transaction)
@@ -151,8 +151,8 @@ internal extension PurchaseStatusManager {
             if li != ri { return li < ri }
             // tie-breaker: later expiration date or transaction purchase date
 
-            let lhsVerify = try? StoreKitManager.verify(lhs.transaction)
-            let rhsVerify = try? StoreKitManager.verify(rhs.transaction)
+            let lhsVerify = try? IQPurchaseKit.verify(lhs.transaction)
+            let rhsVerify = try? IQPurchaseKit.verify(rhs.transaction)
 
             return (lhsVerify?.expirationDate ?? .distantPast) > (rhsVerify?.expirationDate ?? .distantPast)
         }

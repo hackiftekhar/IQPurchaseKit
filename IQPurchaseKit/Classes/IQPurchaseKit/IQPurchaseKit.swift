@@ -1,6 +1,6 @@
 //
-//  StoreKitManager.swift
-//  https://github.com/hackiftekhar/IQStoreKitManager
+//  IQPurchaseKit.swift
+//  https://github.com/hackiftekhar/IQPurchaseKit
 //  Copyright (c) 2025-26 Iftekhar Qurashi.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,18 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import Combine
 import Foundation
 import StoreKit
+import UIKit
 
-public protocol StoreKitManagerDelegate: AnyObject {
+public protocol IQPurchaseKitDelegate: AnyObject {
     func deliver(product: Product, transaction: StoreKit.Transaction, renewalInfo: Product.SubscriptionInfo.RenewalInfo?, receiptData:Data, appAccountToken: UUID?, completion: @escaping ((Swift.Result<Void, Error>) -> Void))
 
     func generateSignature(product: Product, offerID: String, appAccountToken: UUID?, completion: @escaping ((Swift.Result<OfferSignature, Error>) -> Void))
 }
 
-extension StoreKitManagerDelegate {
+extension IQPurchaseKitDelegate {
 
     func deliver(product: Product, transaction: StoreKit.Transaction, renewalInfo: Product.SubscriptionInfo.RenewalInfo?, receiptData:Data, appAccountToken: UUID?, completion: @escaping ((Swift.Result<Void, Error>) -> Void)) {
         completion(.success(()))
@@ -43,15 +45,15 @@ extension StoreKitManagerDelegate {
 
 // StoreKit 2 manager
 @objc
-public final class StoreKitManager: NSObject, ObservableObject {
-    @objc static public let shared = StoreKitManager()
+public final class IQPurchaseKit: NSObject, ObservableObject {
+    @objc static public let shared = IQPurchaseKit()
 
     private let receiptFetcher = AppReceiptFetcher()
 
     // For cancelled subscriptions, we don't get a realtime update, so we schedule a refresh timer
     private var refreshTimer: Timer?
 
-    weak var delegate: StoreKitManagerDelegate?
+    weak var delegate: IQPurchaseKitDelegate?
 
     // MARK: - Configuration
     private var productIDs: [String] = []
@@ -78,13 +80,17 @@ public final class StoreKitManager: NSObject, ObservableObject {
         configure(productIDs: productIDs, delegate: nil)
     }
 
-    public func configure(productIDs: [String], delegate: StoreKitManagerDelegate?) {
+    public func configure(productIDs: [String], delegate: IQPurchaseKitDelegate?) {
         self.productIDs = productIDs
         self.delegate = delegate
         Task {
-            let products = await loadProducts(productIDs: productIDs)
-            self.products = products
-            await refreshStatuses()
+            do {
+                let products = try await loadProducts(productIDs: productIDs)
+                self.products = products
+                await refreshStatuses()
+            } catch {
+                self.products = []
+            }
             beginObservingTransactions()
             addForegroundObserver()
         }
@@ -110,17 +116,12 @@ public final class StoreKitManager: NSObject, ObservableObject {
     }
 
     /// Refresh products
-    public func loadProducts(productIDs: [String]) async -> [Product] {
+    public func loadProducts(productIDs: [String]) async throws -> [Product] {
         var productIDs = productIDs
         if productIDs.isEmpty { productIDs = self.productIDs }
 
-        let products: [Product]
-        do {
-            products = try await loadProducts(for: productIDs)
-        } catch {
-            products = self.products.filter({ productIDs.contains($0.id) })
-        }
-
+        let products = try await loadProducts(for: productIDs)
+        self.products = products
         return products
     }
 
@@ -130,7 +131,7 @@ public final class StoreKitManager: NSObject, ObservableObject {
     }
 }
 
-extension StoreKitManager {
+extension IQPurchaseKit {
 
     /// Purchase a product
     public func purchase(product: Product, offer: Product.SubscriptionOffer? = nil, quantity: Int? = nil) async -> PurchaseState {
@@ -223,7 +224,7 @@ extension StoreKitManager {
     }
 }
 
-extension StoreKitManager {
+extension IQPurchaseKit {
 
     /// Show Apple’s Manage Subscriptions
     public func showManageSubscriptions(in scene: UIWindowScene) async -> Result<Void, Error> {
@@ -256,7 +257,7 @@ extension StoreKitManager {
     }
 }
 
-extension StoreKitManager {
+extension IQPurchaseKit {
 
     /// Get all available subscription offers (intro + promos)
     public func availableSubscriptionOffers(for product: Product) -> [Product.SubscriptionOffer] {
@@ -378,7 +379,7 @@ extension StoreKitManager {
     }
 }
 
-extension StoreKitManager {
+extension IQPurchaseKit {
     private func renewRefreshTimers() {
         refreshTimer?.invalidate()
         refreshTimer = nil

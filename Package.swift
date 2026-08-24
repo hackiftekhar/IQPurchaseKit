@@ -3,26 +3,27 @@
 import PackageDescription
 
 let package = Package(
-    name: "IQStoreKitManager",
+    name: "IQPurchaseKit",
     platforms: [
         .iOS(.v15)
     ],
     products: [
         .library(
-            name: "IQStoreKitManager",
-            targets: ["IQStoreKitManager"]
+            name: "IQPurchaseKit",
+            targets: ["IQPurchaseKit"]
         )
     ],
     targets: [
-        .target(name: "IQStoreKitManager",
-            path: "IQStoreKitManager",
+        .target(name: "IQPurchaseKit",
+            path: "IQPurchaseKit",
             resources: [
                 .copy("Assets/PrivacyInfo.xcprivacy")
             ],
             linkerSettings: [
                 .linkedFramework("StoreKit"),
                 .linkedFramework("Foundation"),
-                .linkedFramework("Security")
+                .linkedFramework("Security"),
+                .linkedFramework("UIKit")
             ]
         )
     ]

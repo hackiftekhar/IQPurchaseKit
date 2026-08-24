@@ -1,11 +1,11 @@
-# IQStoreKitManager
+# IQPurchaseKit
 
-[![CI Status](https://img.shields.io/travis/hackiftekhar/IQStoreKitManager.svg?style=flat)](https://travis-ci.org/hackiftekhar/IQStoreKitManager)
-[![Version](https://img.shields.io/cocoapods/v/IQStoreKitManager.svg?style=flat)](https://cocoapods.org/pods/IQStoreKitManager)
-[![License](https://img.shields.io/cocoapods/l/IQStoreKitManager.svg?style=flat)](https://cocoapods.org/pods/IQStoreKitManager)
-[![Platform](https://img.shields.io/cocoapods/p/IQStoreKitManager.svg?style=flat)](https://cocoapods.org/pods/IQStoreKitManager)
+[![CI Status](https://img.shields.io/travis/hackiftekhar/IQPurchaseKit.svg?style=flat)](https://travis-ci.org/hackiftekhar/IQPurchaseKit)
+[![Version](https://img.shields.io/cocoapods/v/IQPurchaseKit.svg?style=flat)](https://cocoapods.org/pods/IQPurchaseKit)
+[![License](https://img.shields.io/cocoapods/l/IQPurchaseKit.svg?style=flat)](https://cocoapods.org/pods/IQPurchaseKit)
+[![Platform](https://img.shields.io/cocoapods/p/IQPurchaseKit.svg?style=flat)](https://cocoapods.org/pods/IQPurchaseKit)
 
-[![Screenshot](https://raw.githubusercontent.com/hackiftekhar/IQStoreKitManager/master/Screenshot/IQStoreKitManagerScreenshot.png)](https://github.com/hackiftekhar/IQStoreKitManager)
+[![Screenshot](https://raw.githubusercontent.com/hackiftekhar/IQPurchaseKit/master/Screenshot/IQPurchaseKitScreenshot.png)](https://github.com/hackiftekhar/IQPurchaseKit)
 
 A StoreKit 2 wrapper for iOS that handles product loading, purchases, transaction observation, purchase-status tracking, and optional server-side delivery through a delegate.
 
@@ -16,7 +16,7 @@ A StoreKit 2 wrapper for iOS that handles product loading, purchases, transactio
 - **Purchase status tracking** — cached snapshots with keychain persistence and change notifications
 - **Subscription lifecycle awareness** — active, grace period, billing retry, and upcoming renewal states
 - **Promotional offers** — delegate-based offer signature generation
-- **Server delivery hook** — validate receipts and unlock entitlements via `StoreKitManagerDelegate`
+- **Server delivery hook** — validate receipts and unlock entitlements via `IQPurchaseKitDelegate`
 - **Built-in utilities** — restore purchases, manage subscriptions, offer code redemption, and refund requests
 - **Expiry refresh timers** — automatically refreshes status when subscriptions expire or enter grace period
 
@@ -28,20 +28,20 @@ A StoreKit 2 wrapper for iOS that handles product loading, purchases, transactio
 
 ## Installation
 
-IQStoreKitManager is available through [CocoaPods](https://cocoapods.org). Add the following to your Podfile:
+IQPurchaseKit is available through [CocoaPods](https://cocoapods.org). Add the following to your Podfile:
 
 ```ruby
-pod 'IQStoreKitManager'
+pod 'IQPurchaseKit'
 ```
 
 Then run `pod install`.
 
 ## Quick Start
 
-Configure `StoreKitManager` at launch with your product identifiers. Optionally provide a delegate to handle product delivery and promotional offer signatures.
+Configure `IQPurchaseKit` at launch with your product identifiers. Optionally provide a delegate to handle product delivery and promotional offer signatures.
 
 ```swift
-import IQStoreKitManager
+import IQPurchaseKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
-        StoreKitManager.shared.configure(
+        IQPurchaseKit.shared.configure(
             productIDs: [
                 "com.example.monthly",
                 "com.example.yearly",
@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 Optionally link purchases to a user account:
 
 ```swift
-StoreKitManager.shared.setAppAccountToken(userUUID)
+IQPurchaseKit.shared.setAppAccountToken(userUUID)
 ```
 
 ## Making Purchases
@@ -78,14 +78,14 @@ Look up a loaded product and purchase it asynchronously. The result is a `Purcha
 
 ```swift
 import StoreKit
-import IQStoreKitManager
+import IQPurchaseKit
 
 func purchaseMonthly() async {
-    guard let product = StoreKitManager.shared.product(withID: "com.example.monthly") else {
+    guard let product = IQPurchaseKit.shared.product(withID: "com.example.monthly") else {
         return
     }
 
-    let result = await StoreKitManager.shared.purchase(product: product)
+    let result = await IQPurchaseKit.shared.purchase(product: product)
 
     switch result {
     case .success(let transaction):
@@ -106,31 +106,31 @@ Purchase with a quantity (consumables) or a subscription offer:
 
 ```swift
 // Consumable with quantity
-let result = await StoreKitManager.shared.purchase(product: coinsProduct, quantity: 2)
+let result = await IQPurchaseKit.shared.purchase(product: coinsProduct, quantity: 2)
 
 // Subscription with an introductory or promotional offer
-let offers = StoreKitManager.shared.availableSubscriptionOffers(for: subscriptionProduct)
+let offers = IQPurchaseKit.shared.availableSubscriptionOffers(for: subscriptionProduct)
 if let offer = offers.first {
-    let result = await StoreKitManager.shared.purchase(product: subscriptionProduct, offer: offer)
+    let result = await IQPurchaseKit.shared.purchase(product: subscriptionProduct, offer: offer)
 }
 ```
 
 Restore previously purchased products:
 
 ```swift
-let result = await StoreKitManager.shared.restorePurchases()
+let result = await IQPurchaseKit.shared.restorePurchases()
 ```
 
-## StoreKitManagerDelegate
+## IQPurchaseKitDelegate
 
-Implement `StoreKitManagerDelegate` when you need server-side validation or promotional offer support.
+Implement `IQPurchaseKitDelegate` when you need server-side validation or promotional offer support.
 
 ### Product delivery
 
 After a purchase is verified, the manager calls `deliver` with the transaction, renewal info, and base64 App Store receipt. Call `completion(.success(()))` only after your app (or server) has granted the entitlement. Call `completion(.failure(error))` to keep the transaction unfinished.
 
 ```swift
-extension AppDelegate: StoreKitManagerDelegate {
+extension AppDelegate: IQPurchaseKitDelegate {
 
     func deliver(
         product: Product,
@@ -234,22 +234,22 @@ let status: ActiveStatus = manager.status(productID: "com.example.monthly")
 
 ```swift
 // Reload products from the App Store
-let products = await StoreKitManager.shared.loadProducts(productIDs: ["com.example.monthly"])
+let products = try await IQPurchaseKit.shared.loadProducts(productIDs: ["com.example.monthly"])
 
 // Manually refresh purchase statuses
-await StoreKitManager.shared.refreshStatuses()
+await IQPurchaseKit.shared.refreshStatuses()
 
 // Show Apple's subscription management sheet
 if let scene = windowScene {
-    _ = await StoreKitManager.shared.showManageSubscriptions(in: scene)
+    _ = await IQPurchaseKit.shared.showManageSubscriptions(in: scene)
 }
 
 // Present offer code redemption
-StoreKitManager.shared.presentCodeRedemptionSheet()
+IQPurchaseKit.shared.presentCodeRedemptionSheet()
 
 // Begin a refund request for a product
 if let scene = windowScene {
-    _ = await StoreKitManager.shared.beginRefundRequest(for: "com.example.monthly", in: scene)
+    _ = await IQPurchaseKit.shared.beginRefundRequest(for: "com.example.monthly", in: scene)
 }
 ```
 
@@ -263,7 +263,7 @@ pod install
 open PaywallViewController.xcworkspace
 ```
 
-The example demonstrates `IQStoreKitManager` together with [IQPaywallUI](https://github.com/hackiftekhar/IQPaywallUI) for a ready-made paywall UI. See `Example/PaywallViewController/PaywallManager.swift` for a full integration with consumable delivery, subscription checks, and delegate implementation.
+The example demonstrates `IQPurchaseKit` together with [IQPaywallUI](https://github.com/hackiftekhar/IQPaywallUI) for a ready-made paywall UI. See `Example/PaywallViewController/PaywallManager.swift` for a full integration with consumable delivery, subscription checks, and delegate implementation.
 
 ## Author
 
@@ -271,4 +271,4 @@ Iftekhar Qurashi — hack.iftekhar@gmail.com
 
 ## License
 
-IQStoreKitManager is available under the MIT license. See the [LICENSE](LICENSE) file for more information.
+IQPurchaseKit is available under the MIT license. See the [LICENSE](LICENSE) file for more information.

@@ -1,14 +1,14 @@
 {
-    "name": "IQStoreKitManager",
+    "name": "IQPurchaseKit",
     "version": "1.0.0",
     "source": {
-        "git": "https://github.com/hackiftekhar/IQStoreKitManager.git",
+        "git": "https://github.com/hackiftekhar/IQPurchaseKit.git",
         "tag": "1.0.0"
     },
     "summary": "StoreKit Manager",
     "description": "This contains StoreKit related functions.",
-    "homepage": "https://github.com/hackiftekhar/IQStoreKitManager",
-    "screenshots": "https://raw.githubusercontent.com/hackiftekhar/IQStoreKitManager/master/Screenshot/IQStoreKitManagerScreenshot.png",
+    "homepage": "https://github.com/hackiftekhar/IQPurchaseKit",
+    "screenshots": "https://raw.githubusercontent.com/hackiftekhar/IQPurchaseKit/master/Screenshot/IQPurchaseKitScreenshot.png",
     "license": {
         "type": "MIT",
         "file": "LICENSE"
@@ -25,10 +25,10 @@
         "5.9"
     ],
     "source_files": [
-        "IQStoreKitManager/Classes/**/*.{swift}"
+        "IQPurchaseKit/Classes/**/*.{swift}"
     ],
     "resource_bundles": {
-        "IQStoreKitManager": "IQStoreKitManager/Assets/**/*"
+        "IQPurchaseKit": "IQPurchaseKit/Assets/**/*"
     },
     "frameworks": [
         "UIKit",

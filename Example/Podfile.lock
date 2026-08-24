@@ -1,12 +1,12 @@
 PODS:
-  - IQPaywallUI (0.0.1):
-    - IQStoreKitManager
-  - IQStoreKitManager (1.0.0)
+  - IQPaywallUI (1.0.0):
+    - IQPurchaseKit
+  - IQPurchaseKit (1.0.0)
   - SwiftLint (0.62.2)
 
 DEPENDENCIES:
-  - IQPaywallUI (from `https://github.com/hackiftekhar/IQPaywallUI.git`, branch `main`)
-  - IQStoreKitManager (from `../`)
+  - IQPaywallUI (from `../../IQPaywallUI`)
+  - IQPurchaseKit (from `../`)
   - SwiftLint
 
 SPEC REPOS:
@@ -15,21 +15,15 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   IQPaywallUI:
-    :branch: main
-    :git: https://github.com/hackiftekhar/IQPaywallUI.git
-  IQStoreKitManager:
+    :path: "../../IQPaywallUI"
+  IQPurchaseKit:
     :path: "../"
 
-CHECKOUT OPTIONS:
-  IQPaywallUI:
-    :commit: e30c4c2f16293d1f9b5b3adc4624f5196772d007
-    :git: https://github.com/hackiftekhar/IQPaywallUI.git
-
 SPEC CHECKSUMS:
-  IQPaywallUI: 9ce1ac076f6206cd82bfee6aa0621db7e1900c37
-  IQStoreKitManager: 99b5e249bd4ed727f4389612632d7291d0d0bb00
+  IQPaywallUI: 9ecd5b6f8d619b5481096b1c0f4ce11ad9e0a598
+  IQPurchaseKit: 4d66ea0b2686aba1ed7801b6aee19506d8c00b5f
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
 
-PODFILE CHECKSUM: 373295ece4faaaa7c59c7e40c3007774cfd60e26
+PODFILE CHECKSUM: 16d29a5c1ee521a71e78802a4968d9bc69e16c1c
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0
