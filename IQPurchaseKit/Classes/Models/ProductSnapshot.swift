@@ -24,14 +24,18 @@
 import StoreKit
 
 internal struct RenewalSnapshot: Codable, Equatable {
+
     let id: String
     let type: Product.ProductType
     let state: Product.SubscriptionInfo.RenewalState
     let isActive: Bool
+
+    let currentProductID: String?
     let willAutoRenew: Bool
     let autoRenewPreference: String?
     let nextRenewalDate: Date?
     let gracePeriodExpirationDate: Date?
+
     let expirationDate: Date?
     let ownershipType: Transaction.OwnershipType?
 
@@ -41,13 +45,6 @@ internal struct RenewalSnapshot: Codable, Equatable {
         self.id = transaction.productID
         self.type = transaction.productType
         self.state = state
-        self.willAutoRenew = renewalInfo?.willAutoRenew ?? false
-        self.autoRenewPreference = renewalInfo?.autoRenewPreference
-        self.nextRenewalDate = renewalInfo?.renewalDate
-        self.gracePeriodExpirationDate = renewalInfo?.gracePeriodExpirationDate
-        self.expirationDate = transaction.expirationDate
-        self.ownershipType = transaction.ownershipType
-
         switch state {
         case .subscribed, .inGracePeriod:
             isActive = true
@@ -55,6 +52,14 @@ internal struct RenewalSnapshot: Codable, Equatable {
             isActive = false
         default: isActive = false
         }
+
+        self.currentProductID = renewalInfo?.currentProductID
+        self.willAutoRenew = renewalInfo?.willAutoRenew ?? false
+        self.autoRenewPreference = renewalInfo?.autoRenewPreference
+        self.nextRenewalDate = renewalInfo?.renewalDate
+        self.gracePeriodExpirationDate = renewalInfo?.gracePeriodExpirationDate
+        self.expirationDate = transaction.expirationDate
+        self.ownershipType = transaction.ownershipType
     }
 
     enum CodingKeys: String, CodingKey {
@@ -62,6 +67,7 @@ internal struct RenewalSnapshot: Codable, Equatable {
         case type
         case state
         case isActive
+        case currentProductID
         case willAutoRenew
         case autoRenewPreference
         case nextRenewalDate
@@ -76,6 +82,7 @@ internal struct RenewalSnapshot: Codable, Equatable {
         try container.encode(type.rawValue, forKey: .type)
         try container.encode(state.rawValue, forKey: .state)
         try container.encode(isActive, forKey: .isActive)
+        try container.encode(currentProductID, forKey: .currentProductID)
         try container.encode(willAutoRenew, forKey: .willAutoRenew)
         try container.encode(autoRenewPreference, forKey: .autoRenewPreference)
         try container.encode(nextRenewalDate, forKey: .nextRenewalDate)
@@ -92,6 +99,7 @@ internal struct RenewalSnapshot: Codable, Equatable {
         let state: Int = try container.decode(Int.self, forKey: .state)
         self.state = .init(rawValue: state)
         self.isActive = try container.decode(Bool.self, forKey: .isActive)
+        self.currentProductID = try? container.decodeIfPresent(String.self, forKey: .currentProductID)
         self.willAutoRenew = try container.decode(Bool.self, forKey: .willAutoRenew)
         self.nextRenewalDate = try? container.decodeIfPresent(Date.self, forKey: .nextRenewalDate)
         self.gracePeriodExpirationDate = try? container.decodeIfPresent(Date.self, forKey: .gracePeriodExpirationDate)

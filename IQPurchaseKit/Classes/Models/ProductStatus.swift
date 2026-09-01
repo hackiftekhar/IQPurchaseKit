@@ -70,6 +70,7 @@ import StoreKit
 
     @objc public let state: RenewalState
     @objc public let ownershipType: OwnershipType
+    @objc public var currentProductID: String? { snapshot.currentProductID }
     @objc public var willAutoRenew: Bool { snapshot.willAutoRenew }
     @objc public var autoRenewPreference: String? { snapshot.autoRenewPreference }
     @objc public var nextRenewalDate: Date? { snapshot.nextRenewalDate }
@@ -132,5 +133,18 @@ import StoreKit
     @objc
     public var isActive: Bool {
         renewalInfo?.isActive ?? false
+    }
+}
+
+@objc public final class ProductRenewalInfo: NSObject {
+    @objc public let currentPlan: ProductStatus
+    @objc public let nextPlan: ProductStatus?
+    @objc public let eventDate: Date?
+
+    public init(currentPlan: ProductStatus, nextPlan: ProductStatus?) {
+        self.currentPlan = currentPlan
+        self.nextPlan = nextPlan
+        self.eventDate = currentPlan.renewalInfo?.nextRenewalDate ?? currentPlan.renewalInfo?.expirationDate ?? currentPlan.renewalInfo?.gracePeriodExpirationDate
+        super.init()
     }
 }

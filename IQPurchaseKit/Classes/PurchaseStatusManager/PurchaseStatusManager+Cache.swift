@@ -52,7 +52,7 @@ internal extension PurchaseStatusManager {
         return map
     }
 
-    func clearSnapshots() throws {
+    func clearPersistentSnapshots() throws {
         try PurchaseStatusManagerKeychain.remove(for: Self.snapshotsAccount)
     }
 }
