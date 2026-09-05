@@ -126,7 +126,7 @@ internal extension PurchaseStatusManager {
 
                 let introEligible = await isEligibleForIntroOffer(for: product)
                 // Non-subscription product — try to find a latest transaction
-                if let transaction = await IQPurchaseKit.shared.latestTransaction(for: product.id) {
+                if let transaction = await PurchaseKit.shared.latestTransaction(for: product.id) {
                     let snap = ProductSnapshot(product: product,
                                                isEligibleForIntroOffer: introEligible,
                                                transaction: transaction)
@@ -146,17 +146,17 @@ internal extension PurchaseStatusManager {
         }
         self.snapshotStatus = newSnapshots
         if newSnapshots != cachedSnapshots {
-//            for pair in newSnapshots {
-//                print(pair.key,
-//                      pair.value.status.displayName,
-//                      "Will Autorenew: \(pair.value.renewalInfo?.willAutoRenew ?? false)",
-//                      "Prefs: \(pair.value.renewalInfo?.autoRenewPreference ?? "-"))",
-//                      "Renewal: \(pair.value.renewalInfo?.nextRenewalDate?.formatted(date: .numeric, time: .standard) ?? "-"))",
-//                      "Expiry: \(pair.value.renewalInfo?.expirationDate?.formatted(date: .numeric, time: .standard) ?? "-")",
-//                      "Grace Expiry: \(pair.value.renewalInfo?.gracePeriodExpirationDate?.formatted(date: .numeric, time: .standard) ?? "-")",
-//                      separator: "\t"
-//                )
-//            }
+            //            for pair in newSnapshots {
+            //                print(pair.key,
+            //                      pair.value.status.displayName,
+            //                      "Will Autorenew: \(pair.value.renewalInfo?.willAutoRenew ?? false)",
+            //                      "Prefs: \(pair.value.renewalInfo?.autoRenewPreference ?? "-"))",
+            //                      "Renewal: \(pair.value.renewalInfo?.nextRenewalDate?.formatted(date: .numeric, time: .standard) ?? "-"))",
+            //                      "Expiry: \(pair.value.renewalInfo?.expirationDate?.formatted(date: .numeric, time: .standard) ?? "-")",
+            //                      "Grace Expiry: \(pair.value.renewalInfo?.gracePeriodExpirationDate?.formatted(date: .numeric, time: .standard) ?? "-")",
+            //                      separator: "\t"
+            //                )
+            //            }
             await MainActor.run {
                 NotificationCenter.default.post(name: Self.purchaseStatusDidChangedNotification, object: nil)
             }
@@ -181,8 +181,8 @@ internal extension PurchaseStatusManager {
             if li != ri { return li < ri }
             // tie-breaker: later expiration date or transaction purchase date
 
-            let lhsVerify = try? IQPurchaseKit.verify(lhs.transaction)
-            let rhsVerify = try? IQPurchaseKit.verify(rhs.transaction)
+            let lhsVerify = try? PurchaseKit.verify(lhs.transaction)
+            let rhsVerify = try? PurchaseKit.verify(rhs.transaction)
 
             return (lhsVerify?.expirationDate ?? .distantPast) > (rhsVerify?.expirationDate ?? .distantPast)
         }

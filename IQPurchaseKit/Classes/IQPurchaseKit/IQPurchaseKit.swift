@@ -25,14 +25,15 @@ import Combine
 import Foundation
 import StoreKit
 import UIKit
+import CryptoKit
 
-public protocol IQPurchaseKitDelegate: AnyObject {
+public protocol PurchaseKitDelegate: AnyObject {
     func deliver(product: Product, transaction: StoreKit.Transaction, renewalInfo: Product.SubscriptionInfo.RenewalInfo?, receiptData:Data, appAccountToken: UUID?, completion: @escaping ((Swift.Result<Void, Error>) -> Void))
 
     func generateSignature(product: Product, offerID: String, appAccountToken: UUID?, completion: @escaping ((Swift.Result<OfferSignature, Error>) -> Void))
 }
 
-extension IQPurchaseKitDelegate {
+extension PurchaseKitDelegate {
 
     func deliver(product: Product, transaction: StoreKit.Transaction, renewalInfo: Product.SubscriptionInfo.RenewalInfo?, receiptData:Data, appAccountToken: UUID?, completion: @escaping ((Swift.Result<Void, Error>) -> Void)) {
         completion(.success(()))
@@ -45,15 +46,15 @@ extension IQPurchaseKitDelegate {
 
 // StoreKit 2 manager
 @objc
-public final class IQPurchaseKit: NSObject, ObservableObject {
-    @objc static public let shared = IQPurchaseKit()
+public final class PurchaseKit: NSObject, ObservableObject {
+    @objc static public let shared = PurchaseKit()
 
     private let receiptFetcher = AppReceiptFetcher()
 
     // For cancelled subscriptions, we don't get a realtime update, so we schedule a refresh timer
     private var refreshTimer: Timer?
 
-    weak var delegate: IQPurchaseKitDelegate?
+    public weak var delegate: PurchaseKitDelegate?
 
     // MARK: - Configuration
     private var productIDs: [String] = []
@@ -80,7 +81,7 @@ public final class IQPurchaseKit: NSObject, ObservableObject {
         configure(productIDs: productIDs, delegate: nil)
     }
 
-    public func configure(productIDs: [String], delegate: IQPurchaseKitDelegate?) {
+    public func configure(productIDs: [String], delegate: PurchaseKitDelegate?) {
         self.productIDs = productIDs
         self.delegate = delegate
         Task {
@@ -131,7 +132,7 @@ public final class IQPurchaseKit: NSObject, ObservableObject {
     }
 }
 
-extension IQPurchaseKit {
+extension PurchaseKit {
 
     /// Purchase a product
     public func purchase(product: Product, offer: Product.SubscriptionOffer? = nil, quantity: Int? = nil) async -> PurchaseState {
@@ -224,7 +225,7 @@ extension IQPurchaseKit {
     }
 }
 
-extension IQPurchaseKit {
+extension PurchaseKit {
 
     /// Show Apple’s Manage Subscriptions
     public func showManageSubscriptions(in scene: UIWindowScene) async -> Result<Void, Error> {
@@ -257,7 +258,7 @@ extension IQPurchaseKit {
     }
 }
 
-extension IQPurchaseKit {
+extension PurchaseKit {
 
     /// Get all available subscription offers (intro + promos)
     public func availableSubscriptionOffers(for product: Product) -> [Product.SubscriptionOffer] {
@@ -317,7 +318,7 @@ extension IQPurchaseKit {
         })
     }
     
-    static func verify<T>(_ result: VerificationResult<T>) throws -> T {
+    internal static func verify<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
         case .unverified(_, let error):
             throw error
@@ -330,7 +331,7 @@ extension IQPurchaseKit {
 
     /// Choose the most relevant status for a product and convert to snapshot
 
-    func latestTransaction(for productID: String) async -> Transaction? {
+    internal func latestTransaction(for productID: String) async -> Transaction? {
         // Prefer current entitlements
         for await result in Transaction.currentEntitlements {
             if let tx = try? Self.verify(result), tx.productID == productID {
@@ -379,7 +380,7 @@ extension IQPurchaseKit {
     }
 }
 
-extension IQPurchaseKit {
+extension PurchaseKit {
     private func renewRefreshTimers() {
         refreshTimer?.invalidate()
         refreshTimer = nil
@@ -410,5 +411,32 @@ extension IQPurchaseKit {
         timer.tolerance = 1
         RunLoop.main.add(timer, forMode: .common)
         refreshTimer = timer
+    }
+}
+
+extension PurchaseKit {
+
+    // MARK: - AppAccount token generation from Int type of user id
+    @objc public func recommendedAppAccountToken(for userID: Int) -> UUID {
+        let input = "\(Bundle.main.bundleIdentifier ?? "")-\(userID)"
+
+        let digest = SHA256.hash(data: Data(input.utf8))   // SHA256Digest
+
+        var bytes = Array(digest) // [UInt8], SHA256 => 32 bytes
+
+        //    - version = 4 (pseudo-random / here derived from hash) : set high nibble of byte[6] to 0x4
+        //    - variant = RFC 4122 : set high bits of byte[8] to 0b10xxxxxx
+        bytes[6] = (bytes[6] & 0x0F) | 0x40   // version 4
+        bytes[8] = (bytes[8] & 0x3F) | 0x80   // variant RFC4122
+
+        // 5) UUID tuple (uuid_t)
+        let uuidTuple: uuid_t = (
+            bytes[0], bytes[1], bytes[2], bytes[3],
+            bytes[4], bytes[5], bytes[6], bytes[7],
+            bytes[8], bytes[9], bytes[10], bytes[11],
+            bytes[12], bytes[13], bytes[14], bytes[15]
+        )
+
+        return UUID(uuid: uuidTuple)
     }
 }

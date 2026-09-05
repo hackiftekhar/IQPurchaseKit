@@ -1,12 +1,11 @@
 //
 //  TableViewController.swift
-//  PaywallViewController
+//  PurchaseKitExample
 //
 //  Created by Iftekhar on 11/14/25.
 //
 
 import UIKit
-import IQPaywallUI
 import IQPurchaseKit
 import SwiftUI
 

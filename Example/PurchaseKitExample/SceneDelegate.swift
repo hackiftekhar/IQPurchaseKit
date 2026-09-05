@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  PaywallViewController
+//  PurchaseKitExample
 //
 //  Created by Iftekhar on 11/14/25.
 //

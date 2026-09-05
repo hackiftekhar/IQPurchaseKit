@@ -260,10 +260,10 @@ To run the example app, clone the repository and install dependencies from the `
 ```bash
 cd Example
 pod install
-open PaywallViewController.xcworkspace
+open PurchaseKitExample.xcworkspace
 ```
 
-The example demonstrates `IQPurchaseKit` together with [IQPaywallUI](https://github.com/hackiftekhar/IQPaywallUI) for a ready-made paywall UI. See `Example/PaywallViewController/PaywallManager.swift` for a full integration with consumable delivery, subscription checks, and delegate implementation.
+The example demonstrates `IQPurchaseKit` together with [IQPaywallUI](https://github.com/hackiftekhar/IQPaywallUI) for a ready-made paywall UI. See `Example/PurchaseKitExample/PaywallManager.swift` for a full integration with consumable delivery, subscription checks, and delegate implementation.
 
 ## Author
 

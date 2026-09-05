@@ -59,24 +59,15 @@ public struct ProductInfo: Identifiable, Hashable {
     }
 
     public var discountedDisplayPrice: String? {
-        guard let subscription = subscription,
-              let offer = subscription.introductoryOffer else {
+        guard let offer = subscription?.introductoryOffer else {
             return nil
         }
 
         switch offer.paymentMode {
         case .freeTrial:
-            return "\(offer.period.localizedDescription) Free"
-        case .payAsYouGo, .payUpFront:
-            fallthrough
+            return "\(offer.durationDescription) Free"
         default:
-            let originalDays = subscription.subscriptionPeriod.days
-            let upfrontDays = offer.period.days * offer.periodCount
-
-            let ratio = Decimal(originalDays) / Decimal(upfrontDays)
-            let offerPrice = offer.price * ratio
-
-            return offerPrice.formatted(priceFormatStyle)
+            return comparableIntroDisplayPrice
         }
     }
 

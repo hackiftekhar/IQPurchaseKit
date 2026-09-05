@@ -2,10 +2,8 @@ use_frameworks!
 
 platform :ios, '15.0'
 
-target 'PaywallViewController' do
-  pod 'IQPaywallUI', :path => '../../IQPaywallUI'
+target 'PurchaseKitExample' do
   pod 'IQPurchaseKit', :path => '../'
-
   pod "SwiftLint"
 end
 

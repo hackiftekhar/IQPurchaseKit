@@ -161,9 +161,9 @@ internal struct ProductSnapshot: Codable, Equatable {
         self.isFamilyShareable = product.isFamilyShareable
 
         if let status = status,
-           let transaction: Transaction = try? Self.verify(status.transaction) {
+           let transaction: Transaction = try? PurchaseKit.verify(status.transaction) {
 
-            let renewalInfo: Product.SubscriptionInfo.RenewalInfo? = try? Self.verify(status.renewalInfo)
+            let renewalInfo: Product.SubscriptionInfo.RenewalInfo? = try? PurchaseKit.verify(status.renewalInfo)
             if renewalInfo?.currentProductID == product.id {
                 let renewalSnapshot = RenewalSnapshot(state: status.state,
                                                       transaction: transaction,
@@ -207,16 +207,6 @@ internal struct ProductSnapshot: Codable, Equatable {
 //        let environment: String = try container.decode(String.self, forKey: .environment)
 //        self.environment = AppStore.Environment(rawValue: environment)
     }
-
-    private static func verify<T>(_ result: VerificationResult<T>) throws -> T {
-        switch result {
-        case .unverified(_, let error):
-            throw error
-        case .verified(let safe):
-            return safe
-        }
-    }
-
 
     var status: ActiveStatus {
         switch renewalInfo?.state {

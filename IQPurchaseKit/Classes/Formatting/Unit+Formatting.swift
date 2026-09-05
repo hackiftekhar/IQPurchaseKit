@@ -5,7 +5,7 @@ import StoreKit
 
 extension Product.SubscriptionPeriod.Unit {
 
-    var formatted: String {
+    public var formatted: String {
         switch self {
         case .day:      return "Day"
         case .week:     return "Week"
@@ -15,7 +15,7 @@ extension Product.SubscriptionPeriod.Unit {
         }
     }
 
-    var lyFormatted: String {
+    public var lyFormatted: String {
         switch self {
         case .day:      return "Daily"
         case .week:     return "Weekly"

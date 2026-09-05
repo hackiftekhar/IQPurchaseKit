@@ -96,6 +96,32 @@ import StoreKit
         }
         super.init()
     }
+
+    public struct Info {
+        public let currentProductID: String
+        public let nextProductID: String?
+        public let date: Date?
+    }
+
+    public var info: Info? {
+
+        switch state {
+        case .subscribed, .inBillingRetryPeriod, .inGracePeriod:
+            if let currentProductID = currentProductID {
+                let date: Date? = nextRenewalDate ?? expirationDate ?? gracePeriodExpirationDate
+                if willAutoRenew {
+                    return .init(currentProductID: currentProductID, nextProductID: autoRenewPreference, date: date)
+                } else {
+                    return .init(currentProductID: currentProductID, nextProductID: nil, date: date)
+                }
+            }
+        case .expired:
+            return nil
+        case .revoked:
+            return nil
+        }
+        return nil
+    }
 }
 
 @objc public final class ProductStatus: NSObject {

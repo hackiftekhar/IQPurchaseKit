@@ -9,7 +9,7 @@ import UIKit
 @MainActor
 public final class PaywallViewModel: ObservableObject {
 
-    private let purchaseKit = IQPurchaseKit.shared
+    private let purchaseKit = PurchaseKit.shared
     private let purchaseStatusManager = PurchaseStatusManager.shared
     private var purchaseStatusObserver: NSObjectProtocol?
 

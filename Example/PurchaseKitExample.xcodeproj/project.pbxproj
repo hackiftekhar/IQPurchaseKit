@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		319B660BD300440FBD7BBDC8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FF501BB5E350481BB57BBDC8 /* README.md */; };
-		BD6C0A06E8AA586A4F000AAC /* Pods_PaywallViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38894586A6EAF85BDDD918F /* Pods_PaywallViewController.framework */; };
+		BD6C0A06E8AA586A4F000AAC /* Pods_PurchaseKitExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38894586A6EAF85BDDD918F /* Pods_PurchaseKitExample.framework */; };
 		C0C599E22ED71202004CA4CA /* PaywallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C599E12ED71202004CA4CA /* PaywallManager.swift */; };
 		C0EBFFBB2EC74D80000B0149 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EBFFB12EC74D80000B0149 /* AppDelegate.swift */; };
 		C0EBFFBC2EC74D80000B0149 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EBFFB82EC74D80000B0149 /* SceneDelegate.swift */; };
@@ -16,7 +16,13 @@
 		C0EBFFBE2EC74D80000B0149 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0EBFFB22EC74D80000B0149 /* Assets.xcassets */; };
 		C0EBFFC02EC74D80000B0149 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0EBFFB52EC74D80000B0149 /* LaunchScreen.storyboard */; };
 		C0EBFFC12EC74D80000B0149 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0EBFFB72EC74D80000B0149 /* Main.storyboard */; };
-		C0EFBE022FED5BA5003E53F4 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = C0EFBDFF2FED5BA5003E53F4 /* .gitkeep */; };
+		C0EF6ADB304BE00C00E87BB2 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6ADA304BE00C00E87BB2 /* PaywallView.swift */; };
+		C0EF6ADD304BEF0100E87BB2 /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6ADC304BEF0100E87BB2 /* ProductInfo.swift */; };
+		C0EF6AE0304BEF3500E87BB2 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6ADE304BEF3500E87BB2 /* PaywallViewModel.swift */; };
+		C0EF6AE5304BEF6400E87BB2 /* Unit+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE3304BEF6400E87BB2 /* Unit+Formatting.swift */; };
+		C0EF6AE6304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE1304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift */; };
+		C0EF6AE7304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE2304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift */; };
+		C0EF6AEA304BEFB100E87BB2 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE9304BEFB100E87BB2 /* AlertModel.swift */; };
 		C0EFBE032FED5BA5003E53F4 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C0EFBDF02FED5BA5003E53F4 /* PrivacyInfo.xcprivacy */; };
 		C0EFBE042FED5BA5003E53F4 /* ProductSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EFBDF32FED5BA5003E53F4 /* ProductSnapshot.swift */; };
 		C0EFBE052FED5BA5003E53F4 /* AppReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EFBDFB2FED5BA5003E53F4 /* AppReceiptFetcher.swift */; };
@@ -29,27 +35,11 @@
 		C0EFBE0C2FED5BA5003E53F4 /* IQPurchaseKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EFBDFD2FED5BA5003E53F4 /* IQPurchaseKit.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildRule section */
-		CB3DF3037B4545E2837BBDC8 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			filePatterns = "*.md";
-			fileType = pattern.proxy;
-			inputFiles = (
-			);
-			isEditable = 0;
-			outputFiles = (
-				"/tmp/${INPUT_FILE_BASE}",
-			);
-			script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"/tmp/${INPUT_FILE_BASE}\"\nsh -c \"${A8CDBB7}\"\n";
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXFileReference section */
-		905AFD7F40A9E7F7720FC67D /* Pods-PaywallViewController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaywallViewController.release.xcconfig"; path = "Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController.release.xcconfig"; sourceTree = "<group>"; };
-		BE77F150E05FF2FAF5D80AB9 /* Pods-PaywallViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaywallViewController.debug.xcconfig"; path = "Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController.debug.xcconfig"; sourceTree = "<group>"; };
+		905AFD7F40A9E7F7720FC67D /* Pods-PurchaseKitExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PurchaseKitExample.release.xcconfig"; path = "Target Support Files/Pods-PurchaseKitExample/Pods-PurchaseKitExample.release.xcconfig"; sourceTree = "<group>"; };
+		BE77F150E05FF2FAF5D80AB9 /* Pods-PurchaseKitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PurchaseKitExample.debug.xcconfig"; path = "Target Support Files/Pods-PurchaseKitExample/Pods-PurchaseKitExample.debug.xcconfig"; sourceTree = "<group>"; };
 		C0C599E12ED71202004CA4CA /* PaywallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallManager.swift; sourceTree = "<group>"; };
-		C0EBFF892EC74C2E000B0149 /* PaywallViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaywallViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0EBFF892EC74C2E000B0149 /* PurchaseKitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PurchaseKitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EBFFB12EC74D80000B0149 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0EBFFB22EC74D80000B0149 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0EBFFB32EC74D80000B0149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -57,6 +47,13 @@
 		C0EBFFB62EC74D80000B0149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C0EBFFB82EC74D80000B0149 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C0EBFFB92EC74D80000B0149 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		C0EF6ADA304BE00C00E87BB2 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		C0EF6ADC304BEF0100E87BB2 /* ProductInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfo.swift; sourceTree = "<group>"; };
+		C0EF6ADE304BEF3500E87BB2 /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
+		C0EF6AE1304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubscriptionOffer+Formatting.swift"; sourceTree = "<group>"; };
+		C0EF6AE2304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubscriptionPeriod+Formatting.swift"; sourceTree = "<group>"; };
+		C0EF6AE3304BEF6400E87BB2 /* Unit+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Unit+Formatting.swift"; sourceTree = "<group>"; };
+		C0EF6AE9304BEFB100E87BB2 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		C0EFBDE92FED5B66003E53F4 /* IQPurchaseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IQPurchaseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EFBDF02FED5BA5003E53F4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C0EFBDF22FED5BA5003E53F4 /* OfferSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSignature.swift; sourceTree = "<group>"; };
@@ -69,7 +66,7 @@
 		C0EFBDFB2FED5BA5003E53F4 /* AppReceiptFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReceiptFetcher.swift; sourceTree = "<group>"; };
 		C0EFBDFD2FED5BA5003E53F4 /* IQPurchaseKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IQPurchaseKit.swift; sourceTree = "<group>"; };
 		C0EFBDFF2FED5BA5003E53F4 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		F38894586A6EAF85BDDD918F /* Pods_PaywallViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaywallViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F38894586A6EAF85BDDD918F /* Pods_PurchaseKitExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PurchaseKitExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF501BB5E350481BB57BBDC8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD6C0A06E8AA586A4F000AAC /* Pods_PaywallViewController.framework in Frameworks */,
+				BD6C0A06E8AA586A4F000AAC /* Pods_PurchaseKitExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +92,7 @@
 		9CB223CFB401AC34234F8F4C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F38894586A6EAF85BDDD918F /* Pods_PaywallViewController.framework */,
+				F38894586A6EAF85BDDD918F /* Pods_PurchaseKitExample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -103,8 +100,8 @@
 		A6E9A177456839C9E2232410 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BE77F150E05FF2FAF5D80AB9 /* Pods-PaywallViewController.debug.xcconfig */,
-				905AFD7F40A9E7F7720FC67D /* Pods-PaywallViewController.release.xcconfig */,
+				BE77F150E05FF2FAF5D80AB9 /* Pods-PurchaseKitExample.debug.xcconfig */,
+				905AFD7F40A9E7F7720FC67D /* Pods-PurchaseKitExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -112,7 +109,7 @@
 		C0EBFF802EC74C2E000B0149 = {
 			isa = PBXGroup;
 			children = (
-				C0EBFFBA2EC74D80000B0149 /* PaywallViewController */,
+				C0EBFFBA2EC74D80000B0149 /* PurchaseKitExample */,
 				C0EFBE012FED5BA5003E53F4 /* IQPurchaseKit */,
 				C0EBFF8A2EC74C2E000B0149 /* Products */,
 				A6E9A177456839C9E2232410 /* Pods */,
@@ -124,17 +121,17 @@
 			isa = PBXGroup;
 			children = (
 				FF501BB5E350481BB57BBDC8 /* README.md */,
-				C0EBFF892EC74C2E000B0149 /* PaywallViewController.app */,
+				C0EBFF892EC74C2E000B0149 /* PurchaseKitExample.app */,
 				C0EFBDE92FED5B66003E53F4 /* IQPurchaseKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C0EBFFBA2EC74D80000B0149 /* PaywallViewController */ = {
+		C0EBFFBA2EC74D80000B0149 /* PurchaseKitExample */ = {
 			isa = PBXGroup;
 			children = (
+				C0EF6AE8304BEFA000E87BB2 /* PaywallManager */,
 				C0EBFFB12EC74D80000B0149 /* AppDelegate.swift */,
-				C0C599E12ED71202004CA4CA /* PaywallManager.swift */,
 				C0EBFFB22EC74D80000B0149 /* Assets.xcassets */,
 				C0EBFFB32EC74D80000B0149 /* Info.plist */,
 				C0EBFFB52EC74D80000B0149 /* LaunchScreen.storyboard */,
@@ -142,7 +139,35 @@
 				C0EBFFB82EC74D80000B0149 /* SceneDelegate.swift */,
 				C0EBFFB92EC74D80000B0149 /* TableViewController.swift */,
 			);
-			path = PaywallViewController;
+			path = PurchaseKitExample;
+			sourceTree = "<group>";
+		};
+		C0EF6ADF304BEF3500E87BB2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C0EF6ADE304BEF3500E87BB2 /* PaywallViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C0EF6AE4304BEF6400E87BB2 /* Formatting */ = {
+			isa = PBXGroup;
+			children = (
+				C0EF6AE1304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift */,
+				C0EF6AE2304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift */,
+				C0EF6AE3304BEF6400E87BB2 /* Unit+Formatting.swift */,
+			);
+			path = Formatting;
+			sourceTree = "<group>";
+		};
+		C0EF6AE8304BEFA000E87BB2 /* PaywallManager */ = {
+			isa = PBXGroup;
+			children = (
+				C0EF6AE9304BEFB100E87BB2 /* AlertModel.swift */,
+				C0C599E12ED71202004CA4CA /* PaywallManager.swift */,
+				C0EF6ADA304BE00C00E87BB2 /* PaywallView.swift */,
+			);
+			path = PaywallManager;
 			sourceTree = "<group>";
 		};
 		C0EFBDF12FED5BA5003E53F4 /* Assets */ = {
@@ -156,6 +181,7 @@
 		C0EFBDF62FED5BA5003E53F4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C0EF6ADC304BEF0100E87BB2 /* ProductInfo.swift */,
 				C0EFBDF22FED5BA5003E53F4 /* OfferSignature.swift */,
 				C0EFBDF32FED5BA5003E53F4 /* ProductSnapshot.swift */,
 				C0EFBDF42FED5BA5003E53F4 /* ProductStatus.swift */,
@@ -193,6 +219,8 @@
 		C0EFBE002FED5BA5003E53F4 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C0EF6AE4304BEF6400E87BB2 /* Formatting */,
+				C0EF6ADF304BEF3500E87BB2 /* ViewModel */,
 				C0EFBDF62FED5BA5003E53F4 /* Models */,
 				C0EFBDFA2FED5BA5003E53F4 /* PurchaseStatusManager */,
 				C0EFBDFC2FED5BA5003E53F4 /* Receipt */,
@@ -225,9 +253,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C0EBFF882EC74C2E000B0149 /* PaywallViewController */ = {
+		C0EBFF882EC74C2E000B0149 /* PurchaseKitExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C0EBFF9C2EC74C30000B0149 /* Build configuration list for PBXNativeTarget "PaywallViewController" */;
+			buildConfigurationList = C0EBFF9C2EC74C30000B0149 /* Build configuration list for PBXNativeTarget "PurchaseKitExample" */;
 			buildPhases = (
 				5338788FE1120047F69F71B3 /* [CP] Check Pods Manifest.lock */,
 				C0EBFF852EC74C2E000B0149 /* Sources */,
@@ -236,13 +264,12 @@
 				DDEDA059A70CA699C739429D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
-				CB3DF3037B4545E2837BBDC8 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
-			name = PaywallViewController;
-			productName = PaywallViewController;
-			productReference = C0EBFF892EC74C2E000B0149 /* PaywallViewController.app */;
+			name = PurchaseKitExample;
+			productName = PurchaseKitExample;
+			productReference = C0EBFF892EC74C2E000B0149 /* PurchaseKitExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C0EFBDE82FED5B66003E53F4 /* IQPurchaseKit */ = {
@@ -281,7 +308,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C0EBFF842EC74C2E000B0149 /* Build configuration list for PBXProject "PaywallViewController" */;
+			buildConfigurationList = C0EBFF842EC74C2E000B0149 /* Build configuration list for PBXProject "PurchaseKitExample" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -295,7 +322,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C0EBFF882EC74C2E000B0149 /* PaywallViewController */,
+				C0EBFF882EC74C2E000B0149 /* PurchaseKitExample */,
 				C0EFBDE82FED5B66003E53F4 /* IQPurchaseKit */,
 			);
 		};
@@ -317,7 +344,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0EFBE022FED5BA5003E53F4 /* .gitkeep in Resources */,
 				C0EFBE032FED5BA5003E53F4 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,7 +366,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PaywallViewController-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PurchaseKitExample-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -353,19 +379,19 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PurchaseKitExample/Pods-PurchaseKitExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PurchaseKitExample/Pods-PurchaseKitExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PaywallViewController/Pods-PaywallViewController-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PurchaseKitExample/Pods-PurchaseKitExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -377,7 +403,9 @@
 			files = (
 				C0C599E22ED71202004CA4CA /* PaywallManager.swift in Sources */,
 				C0EBFFBB2EC74D80000B0149 /* AppDelegate.swift in Sources */,
+				C0EF6ADB304BE00C00E87BB2 /* PaywallView.swift in Sources */,
 				C0EBFFBC2EC74D80000B0149 /* SceneDelegate.swift in Sources */,
+				C0EF6AEA304BEFB100E87BB2 /* AlertModel.swift in Sources */,
 				C0EBFFBD2EC74D80000B0149 /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,9 +417,14 @@
 				C0EFBE042FED5BA5003E53F4 /* ProductSnapshot.swift in Sources */,
 				C0EFBE052FED5BA5003E53F4 /* AppReceiptFetcher.swift in Sources */,
 				C0EFBE062FED5BA5003E53F4 /* OfferSignature.swift in Sources */,
+				C0EF6ADD304BEF0100E87BB2 /* ProductInfo.swift in Sources */,
 				C0EFBE072FED5BA5003E53F4 /* PurchaseStatusManager.swift in Sources */,
+				C0EF6AE0304BEF3500E87BB2 /* PaywallViewModel.swift in Sources */,
 				C0EFBE082FED5BA5003E53F4 /* ProductStatus.swift in Sources */,
 				C0EFBE092FED5BA5003E53F4 /* PurchaseStatusManager+Cache.swift in Sources */,
+				C0EF6AE5304BEF6400E87BB2 /* Unit+Formatting.swift in Sources */,
+				C0EF6AE6304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift in Sources */,
+				C0EF6AE7304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift in Sources */,
 				C0EFBE0A2FED5BA5003E53F4 /* PurchaseState.swift in Sources */,
 				C0EFBE0B2FED5BA5003E53F4 /* PurchaseStatusManagerKeychain.swift in Sources */,
 				C0EFBE0C2FED5BA5003E53F4 /* IQPurchaseKit.swift in Sources */,
@@ -422,7 +455,7 @@
 /* Begin XCBuildConfiguration section */
 		C0EBFF9D2EC74C30000B0149 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE77F150E05FF2FAF5D80AB9 /* Pods-PaywallViewController.debug.xcconfig */;
+			baseConfigurationReference = BE77F150E05FF2FAF5D80AB9 /* Pods-PurchaseKitExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -430,13 +463,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7UUTF6T5P9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PaywallViewController/Info.plist;
+				INFOPLIST_FILE = PurchaseKitExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -456,7 +490,7 @@
 		};
 		C0EBFF9E2EC74C30000B0149 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 905AFD7F40A9E7F7720FC67D /* Pods-PaywallViewController.release.xcconfig */;
+			baseConfigurationReference = 905AFD7F40A9E7F7720FC67D /* Pods-PurchaseKitExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -464,13 +498,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7UUTF6T5P9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PaywallViewController/Info.plist;
+				INFOPLIST_FILE = PurchaseKitExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -692,7 +727,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C0EBFF842EC74C2E000B0149 /* Build configuration list for PBXProject "PaywallViewController" */ = {
+		C0EBFF842EC74C2E000B0149 /* Build configuration list for PBXProject "PurchaseKitExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0EBFF9F2EC74C30000B0149 /* Debug */,
@@ -701,7 +736,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C0EBFF9C2EC74C30000B0149 /* Build configuration list for PBXNativeTarget "PaywallViewController" */ = {
+		C0EBFF9C2EC74C30000B0149 /* Build configuration list for PBXNativeTarget "PurchaseKitExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0EBFF9D2EC74C30000B0149 /* Debug */,

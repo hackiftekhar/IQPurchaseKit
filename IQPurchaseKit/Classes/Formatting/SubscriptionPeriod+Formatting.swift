@@ -21,8 +21,11 @@ extension ProductInfo {
         public var localizedDescription: String {
             switch unit {
             case .day:
+
                 if value == 7 {
                     return "1 Week"
+                } else if value == 14 {
+                    return "2 Weeks"
                 } else {
                     return "\(value) Day\(value == 1 ? "" : "s")"
                 }
@@ -62,6 +65,11 @@ extension ProductInfo {
             @unknown default:
                 return 0
             }
+        }
+
+        /// Duration text covering `count` repetitions of this period (e.g. 1 month × 3 → "3 Months").
+        public func localizedDescription(multipliedBy count: Int) -> String {
+            ProductInfo.SubscriptionPeriod(unit: unit, value: value * max(count, 1)).localizedDescription
         }
     }
 }
