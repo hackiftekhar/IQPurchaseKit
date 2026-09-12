@@ -24,72 +24,44 @@
 import Foundation
 import StoreKit
 
-@objc
-public final class PurchaseStatusManager: NSObject {
+public final class PurchaseStatusManager {
 
-    @objc public static let shared = PurchaseStatusManager()
+    public static let shared = PurchaseStatusManager()
 
-    @objc
     public static let purchaseStatusDidChangedNotification: Notification.Name = Notification.Name("PurchaseStatusDidChangedNotification")
 
     // Cache status snapshots per productID
     private var snapshotStatus: [String: ProductSnapshot] = [:]
 
-    private override init() {
-        super.init()
+    private init() {
         snapshotStatus = (try? self.cachedSnapshot()) ?? [:]
     }
 
-    @objc public var activePlans: [ProductStatus] {
+    public var activePlans: [ProductStatus] {
         let snapshots = self.snapshotStatus.values.filter { $0.isActive }
         return snapshots
             .map { .init(from: $0) }
             .sorted { ($0.renewalInfo?.expirationDate ?? .distantPast) > ($1.renewalInfo?.expirationDate ?? .distantPast)}
     }
 
-    /// Snapshot for UI (active, grace, retry, etc.)
-    @objc public func snapshot(for productID: String) -> ProductStatus? {
+    /// Entitlement status for UI (active, grace, retry, etc.)
+    public func snapshot(for productID: String) -> ProductStatus? {
         guard let snapshot = snapshotStatus[productID] else {
             return nil
         }
         return ProductStatus(from: snapshot)
     }
 
-    @objc public func clearSnapshots() {
+    public func clearSnapshots() {
         try? clearPersistentSnapshots()
     }
 
-    @objc public func status(productID: String) -> ActiveStatus {
+    public func status(productID: String) -> ActiveStatus {
          return snapshotStatus[productID]?.status ?? .inactive
     }
 
-    @objc public func isActive(productID: String) -> Bool {
+    public func isActive(productID: String) -> Bool {
          return snapshotStatus[productID]?.isActive == true
-    }
-
-    @objc public func renewalInfo(productID: String? = nil) -> ProductRenewalInfo? {
-        let snapshot: ProductStatus
-
-        if let productID = productID {
-            guard let plan = self.snapshot(for: productID) else { return nil }
-            snapshot = plan
-        } else if let plan = activePlans.first {
-            snapshot = plan
-        } else {
-            return nil
-        }
-
-        guard let renewalInfo = snapshot.renewalInfo else {
-            return .init(currentPlan: snapshot, nextPlan: snapshot)
-        }
-
-        // Plan change scheduled for next renewal.
-        if let autoRenewPreference = renewalInfo.autoRenewPreference {
-            let nextPlan = self.snapshot(for: autoRenewPreference)
-            return .init(currentPlan: snapshot, nextPlan: nextPlan)
-        } else {
-            return .init(currentPlan: snapshot, nextPlan: nil)
-        }
     }
 }
 

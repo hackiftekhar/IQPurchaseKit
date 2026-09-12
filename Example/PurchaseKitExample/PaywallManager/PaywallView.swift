@@ -15,12 +15,12 @@ public struct PaywallView: View {
     
     // MARK: - PurchaseKit ViewModel
     @StateObject private var viewModel: PaywallViewModel = .init()
+    private let textFormatting: any PaywallTextFormatting
     
     // MARK: - Product IDs
     private let productIDs: [String]
     @State private var selectedProductId: String?
     
-    @State private var productLoadingErrorAlert: AlertModel = .init()
     @State private var productPurchaseResultAlert: AlertModel = .init()
     @State private var productLoadErrorMessage: String?
     
@@ -28,9 +28,14 @@ public struct PaywallView: View {
     @State private var showTermsAndConditions = false
     @State private var showPrivacyPolicy = false
 
-    public init(productIDs: [String], selectedProductId: String?) {
+    public init(
+        productIDs: [String],
+        selectedProductId: String?,
+        textFormatting: any PaywallTextFormatting = DefaultPaywallTextFormatting()
+    ) {
         self.productIDs = productIDs
         self.selectedProductId = selectedProductId
+        self.textFormatting = textFormatting
     }
     
     
@@ -76,49 +81,24 @@ public struct PaywallView: View {
         return viewModel.products.first(where: { $0.id == selectedProductId })
     }
 
+    private var isLoadingEmptyProducts: Bool {
+        viewModel.isProductLoading && viewModel.products.isEmpty
+    }
+
     private var callToActionTitle: String {
-        if viewModel.isProductPurchasing {
-            return String(localized: "Please wait...")
-        }
-
-        if viewModel.isProductLoading && viewModel.products.isEmpty {
-            return String(localized: "Loading...")
-        }
-
-        guard let product = selectedProduct else {
-            return String(localized: "Choose your plan")
-        }
-
-        if product.isActive {
-            if product.type == .autoRenewable || product.type == .nonRenewable {
-                return String(localized: "Manage Subscription")
-            } else {
-                return String(localized: "Unlocked")
-            }
-        }
-
-        if product.shouldDisplayIntroductoryOffer {
-            return product.subscribeActionTitle
-        }
-
-        return "\(String(localized: "Subscribe")) \(compactPrice(product.displayPrice))"
+        textFormatting.callToActionTitle(
+            selectedProduct: selectedProduct,
+            isPurchasing: viewModel.isProductPurchasing,
+            isLoadingEmptyProducts: isLoadingEmptyProducts
+        )
     }
 
     private var callToActionSubtitle: String? {
-        if viewModel.isProductPurchasing ||
-            (viewModel.isProductLoading && viewModel.products.isEmpty) {
-            return nil
-        }
-
-        guard let product = selectedProduct, !product.isActive else {
-            return nil
-        }
-
-        if product.shouldDisplayIntroductoryOffer {
-            return product.subscribeActionSubtitle
-        }
-
-        return product.subscriptionPeriodDescription
+        textFormatting.callToActionSubtitle(
+            selectedProduct: selectedProduct,
+            isPurchasing: viewModel.isProductPurchasing,
+            isLoadingEmptyProducts: isLoadingEmptyProducts
+        )
     }
     
     // MARK: - Body
@@ -182,22 +162,6 @@ public struct PaywallView: View {
                     await PurchaseKit.shared.refreshStatuses()
                 }
             }
-        }
-        .alert(
-            productLoadingErrorAlert.title,
-            isPresented: $productLoadingErrorAlert.isShow
-        ) {
-
-            Button(
-                productLoadingErrorAlert.buttonTitle,
-                role: .cancel
-            ) {
-                productLoadingErrorAlert.hide()
-            }
-
-        } message: {
-
-            Text(productLoadingErrorAlert.message)
         }
         .alert(
             productPurchaseResultAlert.title,
@@ -328,7 +292,7 @@ extension PaywallView {
                     ProgressView()
                     //                        .tint(MMColor.accent)
 
-                    Text(String(localized: "Loading plans..."))
+                    Text(textFormatting.loadingPlansTitle())
                         .font(.system(size: 13, weight: .medium))
                     //                        .foregroundStyle(MMColor.muted2)
                 }
@@ -336,7 +300,7 @@ extension PaywallView {
                 .padding(.vertical, 24)
             } else if let productLoadErrorMessage {
                 VStack(spacing: 10) {
-                    Text(String(localized: "Error"))
+                    Text(textFormatting.plansErrorTitle())
                         .font(.system(size: 18, weight: .heavy))
                     //                        .foregroundStyle(MMColor.text)
 
@@ -345,7 +309,7 @@ extension PaywallView {
                     //                        .foregroundStyle(MMColor.muted2)
                         .multilineTextAlignment(.center)
 
-                    Button(String(localized: "Retry")) {
+                    Button(textFormatting.retryButtonTitle()) {
                         Task {
                             await fetchProducts()
                         }
@@ -383,7 +347,6 @@ extension PaywallView {
         let isSelected = selectedProductId == product.id
 
         let isActive = product.isActive == true
-        let isNonConsumable = product.type == .nonConsumable
         let introductoryOffer = product.subscription?.introductoryOffer
 
         let hasEligibleIntroductoryOffer = product.shouldDisplayIntroductoryOffer && !isActive
@@ -416,7 +379,7 @@ extension PaywallView {
                             
                             if isActive {
                                 
-                                Text(String(localized: isNonConsumable ? "UNLOCKED" : "ACTIVE"))
+                                Text(textFormatting.activeBadgeTitle(for: product))
                                     .font(.system(size: 10, weight: .heavy))
                                     .foregroundStyle(.blue)
                                     .padding(.horizontal, 6)
@@ -463,85 +426,73 @@ extension PaywallView {
     }
 
     private func planStatus(currentPlan: ProductStatus, renewalInfo: RenewalStatus.Info) -> some View {
-        let dateString = renewalInfo.date?.formatted(.dateTime.hour().minute().month().day().year()) ?? ""
+        let nextPlanDisplayName: String? = {
+            guard let nextProductID = renewalInfo.nextProductID,
+                  renewalInfo.currentProductID != nextProductID else {
+                return nil
+            }
+            return PurchaseStatusManager.shared.snapshot(for: nextProductID)?.displayName ?? nextProductID
+        }()
 
-        return VStack(spacing: 4) {
-            switch currentPlan.type {
-            case .autoRenewable:
-                switch currentPlan.status {
-                case .active, .upcoming:
-                    if renewalInfo.currentProductID == renewalInfo.nextProductID {
-                        Text("'\(currentPlan.displayName)' Renews Automatically")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(.green)
-                        Text("Your subscription will renew on \(dateString)")
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(.secondary)
-                    } else if let nextProductID = renewalInfo.nextProductID, renewalInfo.currentProductID != nextProductID {
-                        let nextPlanName = PurchaseStatusManager.shared.snapshot(for: nextProductID)?.displayName ?? nextProductID
-                        Text("Upcoming Plan Change")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(.blue)
-                        Text("Starting \(dateString), your plan will change from '\(currentPlan.displayName)' to '\(nextPlanName)'")
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(.secondary)
-                    } else {
-                        Text("'\(currentPlan.displayName)' Subscription Cancelled")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(.orange)
-                        Text("Your subscription will remain active until \(dateString)")
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(.secondary)
-                    }
-                case .inactive, .unlocked:
-                    EmptyView()
-                case .gracePeriod:
-                    Text("Payment Issue")
+        return Group {
+            if let texts = textFormatting.subscriptionStatusTexts(
+                currentPlan: currentPlan,
+                renewalInfo: renewalInfo,
+                nextPlanDisplayName: nextPlanDisplayName
+            ) {
+                VStack(spacing: 4) {
+                    Text(texts.title)
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(.orange)
-                    Text("We couldn't process your payment. Your '\(currentPlan.displayName)' subscription remains active until \(dateString). Please update your payment method to avoid losing access.")
+                        .foregroundStyle(statusTitleColor(for: currentPlan, renewalInfo: renewalInfo))
+                    Text(texts.message)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.secondary)
-                case .billingRetryPeriod:
-                    Text("Payment Issue")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(.red)
-                    Text("We couldn't process your payment for your '\(currentPlan.displayName)' subscription. Apple is retrying the payment. Please update your payment method to restore your subscription.")
-                        .multilineTextAlignment(.leading)
-                        .foregroundStyle(.secondary)
-                @unknown default:
-                    EmptyView()
                 }
-            case .nonRenewable:
-                Text("'\(currentPlan.displayName)' Active")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.green)
-                Text("Your subscription will remain active until \(dateString)")
-                    .foregroundStyle(.secondary)
-            case .consumable, .nonConsumable:
-                EmptyView()
-            default:
-                EmptyView()
+                .font(.system(size: 12))
+                .frame(maxWidth: .infinity)
+                .multilineTextAlignment(.center)
             }
         }
-        .font(.system(size: 12))
-        .frame(maxWidth: .infinity)
-        .multilineTextAlignment(.center)
     }
 
-    private func compactPrice(_ price: String) -> String {
-        price.replacingOccurrences(of: ".00", with: "")
+    private func statusTitleColor(for currentPlan: ProductStatus, renewalInfo: RenewalStatus.Info) -> Color {
+        switch currentPlan.type {
+        case .autoRenewable:
+            switch currentPlan.status {
+            case .active, .upcoming:
+                if renewalInfo.currentProductID == renewalInfo.nextProductID {
+                    return .green
+                } else if renewalInfo.nextProductID != nil,
+                          renewalInfo.currentProductID != renewalInfo.nextProductID {
+                    return .blue
+                }
+                return .orange
+            case .gracePeriod:
+                return .orange
+            case .billingRetryPeriod:
+                return .red
+            default:
+                return .primary
+            }
+        case .nonRenewable:
+            return .green
+        default:
+            return .primary
+        }
     }
 
     @ViewBuilder
     private func regularPriceColumn(product: ProductInfo, isSelected: Bool) -> some View {
-        Text(compactPrice(product.displayPrice))
+        let texts = textFormatting.regularPriceColumn(for: product)
+        let color = isSelected ? Color.blue : Color.black
+
+        Text(texts.primaryPrice)
             .font(.system(size: 16, weight: .bold))
-            .foregroundStyle(isSelected ? Color.blue : Color.black)
-        if let period = product.subscriptionPeriodDescription {
-            Text(period)
+            .foregroundStyle(color)
+        if let cadence = texts.cadence {
+            Text(cadence)
                 .font(.system(size: 10))
-                .foregroundStyle(isSelected ? Color.blue : Color.black)
+                .foregroundStyle(color)
         }
     }
 
@@ -551,67 +502,32 @@ extension PaywallView {
         offer: ProductInfo.SubscriptionOffer,
         isSelected: Bool
     ) -> some View {
-        let cadence = product.subscriptionPeriodDescription
-        let duration = offer.durationDescription
+        let texts = textFormatting.introductoryOfferPriceColumn(for: product, offer: offer)
         let heroColor = isSelected ? Color.blue : Color.black
 
         VStack(alignment: .trailing, spacing: 3) {
-            switch offer.paymentMode {
-            case .payUpFront:
-                Text(compactPrice(product.displayPrice))
+            if let strikethroughPrice = texts.strikethroughPrice {
+                Text(strikethroughPrice)
                     .font(.system(size: 16))
                     .strikethrough()
                     .foregroundStyle(.secondary)
+            }
 
-                if let equivalentPrice = product.comparableIntroDisplayPrice {
-                    Text(compactPrice(equivalentPrice))
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundStyle(heroColor)
-                }
-                if let cadence {
-                    Text(cadence)
-                        .font(.system(size: 10))
-                        .foregroundStyle(heroColor)
-                }
-                Text("\(compactPrice(offer.displayPrice)) \(String(localized: "for first")) \(duration)")
+            Text(texts.primaryPrice)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(texts.strikethroughPrice == nil ? Color.primary : heroColor)
+
+            if let cadence = texts.cadence {
+                Text(cadence)
+                    .font(.system(size: 10))
+                    .foregroundStyle(heroColor)
+            }
+
+            if let footnote = texts.footnote {
+                Text(footnote)
                     .font(.system(size: 12, weight: .medium))
                     .multilineTextAlignment(.trailing)
                     .foregroundStyle(heroColor)
-
-            case .payAsYouGo:
-                Text(compactPrice(product.displayPrice))
-                    .font(.system(size: 16))
-                    .strikethrough()
-                    .foregroundStyle(.secondary)
-
-                Text(compactPrice(product.comparableIntroDisplayPrice ?? offer.displayPrice))
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(heroColor)
-                if let cadence {
-                    Text(cadence)
-                        .font(.system(size: 10))
-                        .foregroundStyle(heroColor)
-                }
-                Text("\(String(localized: "for first")) \(duration)")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(heroColor)
-
-            case .freeTrial:
-                Text(compactPrice(product.displayPrice))
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.primary)
-
-                if let cadence {
-                    Text(cadence)
-                        .font(.system(size: 10))
-                        .foregroundStyle(heroColor)
-                }
-                Text("\(String(localized: "Free for first")) \(duration)")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(heroColor)
-
-            default:
-                regularPriceColumn(product: product, isSelected: isSelected)
             }
         }
     }
@@ -665,19 +581,19 @@ extension PaywallView {
     private var manageAndRestoreSection: some View {
         HStack(spacing: 8) {
             if viewModel.products.contains(where: { $0.type == .autoRenewable || $0.type == .nonRenewable }) {
-                Button(String(localized: "Manage Subscription")) {
+                Button(textFormatting.manageSubscriptionTitle()) {
                     manageSubscriptionAction()
                 }
 
                 Text(" • ")
             }
-            Button(String(localized: "Restore")) {
+            Button(textFormatting.restorePurchasesTitle()) {
                 restorePurchaseAction()
             }
 
             Text(" • ")
 
-            Button(String(localized: "Redeem")) {
+            Button(textFormatting.redeemCodeTitle()) {
                 redeemAction()
             }
         }
@@ -712,7 +628,6 @@ extension PaywallView {
     
     private func fetchProducts() async {
 
-        productLoadingErrorAlert.hide()
         productLoadErrorMessage = nil
         
         do {
@@ -734,9 +649,6 @@ extension PaywallView {
             }
             
         } catch {
-            
-            productLoadingErrorAlert.show(
-                title: String(localized: "Unable to Load Plans"), message: error.localizedDescription)
             productLoadErrorMessage = error.localizedDescription
         }
     }
@@ -746,11 +658,11 @@ extension PaywallView {
     private func subscribeAction() {
         
         guard let selectedProductId else {
+            let alert = textFormatting.selectPlanAlert()
             productPurchaseResultAlert.show(
-                title: String(localized: "Select a Plan"),
-                message: String(
-                    localized: "Please select a subscription plan to continue."
-                )
+                title: alert.title,
+                message: alert.message,
+                buttonTitle: alert.buttonTitle
             )
             return
         }
@@ -810,33 +722,14 @@ extension PaywallView {
     // MARK: - Purchase Result
     
     private func handlePurchaseResult(_ result: PurchaseState, isRestore: Bool) {
-        
-        switch result {
-        case .success:
-            if isRestore {
-                productPurchaseResultAlert.show(title: "Restored", message: "Purchase Restored completed successfully!")
-            } else {
-                productPurchaseResultAlert.show(title: "Success", message: "Purchase completed successfully!")
-            }
-        case .restored:
-            productPurchaseResultAlert.show(title: "Restored", message: "Purchase Restored completed successfully!")
-        case .pending:
-            if isRestore {
-                productPurchaseResultAlert.show(title: "Purchase Restored Pending", message: "Purchase is Pending to be Completed. You may need to take additional steps to complete the purchase.")
-            } else {
-                productPurchaseResultAlert.show(title: "Purchase Pending", message: "Purchase is Pending to be Completed. You may need to take additional steps to complete the purchase.")
-            }
-
-        case .userCancelled:
-            break
-            
-        case .failure(let error):
-            if isRestore {
-                productPurchaseResultAlert.show(title: "Purchase Restoration Failed", message: error.localizedDescription)
-            } else {
-                productPurchaseResultAlert.show(title: "Purchase Failed", message: error.localizedDescription)
-            }
+        guard let alert = textFormatting.purchaseResultAlert(state: result, isRestore: isRestore) else {
+            return
         }
+        productPurchaseResultAlert.show(
+            title: alert.title,
+            message: alert.message,
+            buttonTitle: alert.buttonTitle
+        )
     }
     
     // MARK: - Terms & Conditions

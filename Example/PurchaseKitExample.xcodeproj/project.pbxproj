@@ -19,10 +19,11 @@
 		C0EF6ADB304BE00C00E87BB2 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6ADA304BE00C00E87BB2 /* PaywallView.swift */; };
 		C0EF6ADD304BEF0100E87BB2 /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6ADC304BEF0100E87BB2 /* ProductInfo.swift */; };
 		C0EF6AE0304BEF3500E87BB2 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6ADE304BEF3500E87BB2 /* PaywallViewModel.swift */; };
-		C0EF6AE5304BEF6400E87BB2 /* Unit+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE3304BEF6400E87BB2 /* Unit+Formatting.swift */; };
+		C0EF6AE5304BEF6400E87BB2 /* PaywallTextFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE3304BEF6400E87BB2 /* PaywallTextFormatting.swift */; };
 		C0EF6AE6304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE1304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift */; };
 		C0EF6AE7304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE2304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift */; };
 		C0EF6AEA304BEFB100E87BB2 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AE9304BEFB100E87BB2 /* AlertModel.swift */; };
+		C0EF6AEB304BEF6400E87BB2 /* DefaultPaywallTextFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF6AEC304BEF6400E87BB2 /* DefaultPaywallTextFormatting.swift */; };
 		C0EFBE032FED5BA5003E53F4 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C0EFBDF02FED5BA5003E53F4 /* PrivacyInfo.xcprivacy */; };
 		C0EFBE042FED5BA5003E53F4 /* ProductSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EFBDF32FED5BA5003E53F4 /* ProductSnapshot.swift */; };
 		C0EFBE052FED5BA5003E53F4 /* AppReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EFBDFB2FED5BA5003E53F4 /* AppReceiptFetcher.swift */; };
@@ -52,8 +53,9 @@
 		C0EF6ADE304BEF3500E87BB2 /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
 		C0EF6AE1304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubscriptionOffer+Formatting.swift"; sourceTree = "<group>"; };
 		C0EF6AE2304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubscriptionPeriod+Formatting.swift"; sourceTree = "<group>"; };
-		C0EF6AE3304BEF6400E87BB2 /* Unit+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Unit+Formatting.swift"; sourceTree = "<group>"; };
+		C0EF6AE3304BEF6400E87BB2 /* PaywallTextFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallTextFormatting.swift; sourceTree = "<group>"; };
 		C0EF6AE9304BEFB100E87BB2 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
+		C0EF6AEC304BEF6400E87BB2 /* DefaultPaywallTextFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPaywallTextFormatting.swift; sourceTree = "<group>"; };
 		C0EFBDE92FED5B66003E53F4 /* IQPurchaseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IQPurchaseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EFBDF02FED5BA5003E53F4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C0EFBDF22FED5BA5003E53F4 /* OfferSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSignature.swift; sourceTree = "<group>"; };
@@ -153,9 +155,10 @@
 		C0EF6AE4304BEF6400E87BB2 /* Formatting */ = {
 			isa = PBXGroup;
 			children = (
+				C0EF6AEC304BEF6400E87BB2 /* DefaultPaywallTextFormatting.swift */,
+				C0EF6AE3304BEF6400E87BB2 /* PaywallTextFormatting.swift */,
 				C0EF6AE1304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift */,
 				C0EF6AE2304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift */,
-				C0EF6AE3304BEF6400E87BB2 /* Unit+Formatting.swift */,
 			);
 			path = Formatting;
 			sourceTree = "<group>";
@@ -381,13 +384,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PurchaseKitExample/Pods-PurchaseKitExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PurchaseKitExample/Pods-PurchaseKitExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -422,7 +421,8 @@
 				C0EF6AE0304BEF3500E87BB2 /* PaywallViewModel.swift in Sources */,
 				C0EFBE082FED5BA5003E53F4 /* ProductStatus.swift in Sources */,
 				C0EFBE092FED5BA5003E53F4 /* PurchaseStatusManager+Cache.swift in Sources */,
-				C0EF6AE5304BEF6400E87BB2 /* Unit+Formatting.swift in Sources */,
+				C0EF6AE5304BEF6400E87BB2 /* PaywallTextFormatting.swift in Sources */,
+				C0EF6AEB304BEF6400E87BB2 /* DefaultPaywallTextFormatting.swift in Sources */,
 				C0EF6AE6304BEF6400E87BB2 /* SubscriptionOffer+Formatting.swift in Sources */,
 				C0EF6AE7304BEF6400E87BB2 /* SubscriptionPeriod+Formatting.swift in Sources */,
 				C0EFBE0A2FED5BA5003E53F4 /* PurchaseState.swift in Sources */,

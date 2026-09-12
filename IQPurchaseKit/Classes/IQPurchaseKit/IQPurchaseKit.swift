@@ -45,9 +45,8 @@ extension PurchaseKitDelegate {
 }
 
 // StoreKit 2 manager
-@objc
-public final class PurchaseKit: NSObject, ObservableObject {
-    @objc static public let shared = PurchaseKit()
+public final class PurchaseKit: ObservableObject {
+    public static let shared = PurchaseKit()
 
     private let receiptFetcher = AppReceiptFetcher()
 
@@ -68,16 +67,14 @@ public final class PurchaseKit: NSObject, ObservableObject {
 
     private let purchaseStatusManager = PurchaseStatusManager.shared
 
-    private override init() {
-        super.init()
-    }
+    private init() {}
     deinit { updatesTask?.cancel() }
 
-    @objc public func setAppAccountToken(_ token: UUID?) {
+    public func setAppAccountToken(_ token: UUID?) {
         self.appAccountToken = token
     }
 
-    @objc public func configure(productIDs: [String]) {
+    public func configure(productIDs: [String]) {
         configure(productIDs: productIDs, delegate: nil)
     }
 
@@ -238,7 +235,7 @@ extension PurchaseKit {
     }
     
     /// Present offer code redemption sheet
-    @objc public func presentCodeRedemptionSheet() {
+    public func presentCodeRedemptionSheet() {
         if SKPaymentQueue.canMakePayments() {
             SKPaymentQueue.default().presentCodeRedemptionSheet()
         }
@@ -417,7 +414,7 @@ extension PurchaseKit {
 extension PurchaseKit {
 
     // MARK: - AppAccount token generation from Int type of user id
-    @objc public func recommendedAppAccountToken(for userID: Int) -> UUID {
+    public func recommendedAppAccountToken(for userID: Int) -> UUID {
         let input = "\(Bundle.main.bundleIdentifier ?? "")-\(userID)"
 
         let digest = SHA256.hash(data: Data(input.utf8))   // SHA256Digest

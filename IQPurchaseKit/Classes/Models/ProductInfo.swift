@@ -3,10 +3,13 @@
 
 import StoreKit
 
-// 1. Create a wrapper struct for display data
 public struct ProductInfo: Identifiable, Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+
+    public static func == (lhs: ProductInfo, rhs: ProductInfo) -> Bool {
+        lhs.id == rhs.id
     }
 
     public let id: String
@@ -58,19 +61,6 @@ public struct ProductInfo: Identifiable, Hashable {
         self.snapshot = snapshot
     }
 
-    public var discountedDisplayPrice: String? {
-        guard let offer = subscription?.introductoryOffer else {
-            return nil
-        }
-
-        switch offer.paymentMode {
-        case .freeTrial:
-            return "\(offer.durationDescription) Free"
-        default:
-            return comparableIntroDisplayPrice
-        }
-    }
-
     public struct SubscriptionInfo: Hashable {
         public let subscriptionPeriod: ProductInfo.SubscriptionPeriod
         public let introductoryOffer: ProductInfo.SubscriptionOffer?
@@ -88,28 +78,6 @@ public struct ProductInfo: Identifiable, Hashable {
                 self.introductoryOffer = nil
             }
         }
-    }
-}
-
-extension ProductInfo {
-    public var subscriptionPeriodDescription: String? {
-        switch type {
-        case .nonConsumable:
-            return "Lifetime"
-        case .autoRenewable:
-            if let period = subscription?.subscriptionPeriod {
-                return "per " + period.formatted
-            }
-        case .nonRenewable:
-            if let period = subscription?.subscriptionPeriod {
-                return period.formatted
-            }
-        case .consumable:
-            fallthrough
-        default:
-            break
-        }
-        return nil
     }
 }
 

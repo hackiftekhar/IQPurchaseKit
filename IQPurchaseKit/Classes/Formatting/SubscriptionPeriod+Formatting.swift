@@ -9,47 +9,14 @@ extension ProductInfo {
         public let unit: Product.SubscriptionPeriod.Unit
         public let value: Int
 
-        init(unit: Product.SubscriptionPeriod.Unit, value: Int) {
+        public init(unit: Product.SubscriptionPeriod.Unit, value: Int) {
             self.unit = unit
             self.value = value
         }
+
         init(subscriptionPeriod: Product.SubscriptionPeriod) {
             self.unit = subscriptionPeriod.unit
             self.value = subscriptionPeriod.value
-        }
-
-        public var localizedDescription: String {
-            switch unit {
-            case .day:
-
-                if value == 7 {
-                    return "1 Week"
-                } else if value == 14 {
-                    return "2 Weeks"
-                } else {
-                    return "\(value) Day\(value == 1 ? "" : "s")"
-                }
-            case .week: return  "\(value) Week\(value == 1 ? "" : "s")"
-            case .month: return "\(value) Month\(value == 1 ? "" : "s")"
-            case .year: return  "\(value) Year\(value == 1 ? "" : "s")"
-            @unknown default: return ""
-            }
-        }
-
-        public var formatted: String {
-            switch unit {
-            case .day:
-                if value == 7 {
-                    return "Week"
-                } else {
-                    return value == 1 ? "Day" : "\(value) Days"
-                }
-
-            case .week: return value == 1 ? "Week" : "\(value) Weeks"
-            case .month: return value == 1 ? "Month" : "\(value) Months"
-            case .year: return value == 1 ? "Year" : "\(value) Years"
-            @unknown default: return ""
-            }
         }
 
         public var days: Int {
@@ -65,11 +32,6 @@ extension ProductInfo {
             @unknown default:
                 return 0
             }
-        }
-
-        /// Duration text covering `count` repetitions of this period (e.g. 1 month × 3 → "3 Months").
-        public func localizedDescription(multipliedBy count: Int) -> String {
-            ProductInfo.SubscriptionPeriod(unit: unit, value: value * max(count, 1)).localizedDescription
         }
     }
 }

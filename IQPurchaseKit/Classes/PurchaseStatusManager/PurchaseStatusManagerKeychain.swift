@@ -24,9 +24,9 @@
 import Foundation
 import Security
 
-internal final class PurchaseStatusManagerKeychain: NSObject {
+internal enum PurchaseStatusManagerKeychain {
     private static let access: CFString = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-    private static let service: String = Bundle.main.bundleIdentifier ?? "com.paywallUI.paywallUI"
+    private static let service: String = Bundle.main.bundleIdentifier ?? "com.PurchaseKit.PurchaseKit"
 
     // MARK: - Keychain primitives
     static func set(data: Data, for key: String) throws {

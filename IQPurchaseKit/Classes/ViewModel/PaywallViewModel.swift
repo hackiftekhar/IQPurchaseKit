@@ -17,10 +17,10 @@ public final class PaywallViewModel: ObservableObject {
     @Published public var products: [ProductInfo] = []
 
     @MainActor
-    @Published @objc public var isProductLoading: Bool = false
+    @Published public var isProductLoading: Bool = false
 
     @MainActor
-    @Published @objc public var isProductPurchasing: Bool = false
+    @Published public var isProductPurchasing: Bool = false
 
     public init() {
         purchaseStatusObserver = NotificationCenter.default.addObserver(
@@ -90,7 +90,7 @@ public final class PaywallViewModel: ObservableObject {
         return await purchaseKit.restorePurchases()
     }
 
-    @objc public func presentCodeRedemptionSheet() {
+    public func presentCodeRedemptionSheet() {
         purchaseKit.presentCodeRedemptionSheet()
     }
 

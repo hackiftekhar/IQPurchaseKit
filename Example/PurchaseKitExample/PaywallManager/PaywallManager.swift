@@ -11,10 +11,9 @@ import SwiftUI
 import IQPurchaseKit
 import StoreKit
 
-@objc
-final class PaywallManager: NSObject {
+final class PaywallManager {
 
-    @objc static let shared = PaywallManager()
+    static let shared = PaywallManager()
 
     enum ProductIdentifier: String, CaseIterable {
 
@@ -30,21 +29,17 @@ final class PaywallManager: NSObject {
         case meditation_tutor   = "com.infoenum.inAppPurchaseDemo.meditation_tutor"
     }
 
-    @objc static var purchaseStatusDidChangedNotification: Notification.Name {
+    static var purchaseStatusDidChangedNotification: Notification.Name {
         return PurchaseStatusManager.purchaseStatusDidChangedNotification
     }
 
-    private override init() {
-        super.init()
-    }
+    private init() {}
 
-    @objc
     func configure() {
         PurchaseKit.shared.configure(productIDs: ProductIdentifier.allCases.map({ $0.rawValue }), delegate: self)
     }
 
     // MARK: - App purchase activation check
-    @objc
     var isSubscribed: Bool {
 #if targetEnvironment(simulator)
         return true
@@ -59,7 +54,6 @@ final class PaywallManager: NSObject {
 #endif
     }
 
-    @objc
     var currentlyActivePlan: ProductStatus? {
         return PurchaseStatusManager.shared.activePlans.first
     }
